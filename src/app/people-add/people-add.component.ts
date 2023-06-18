@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { People } from '../people';
-import { PeopleService } from '../people.service';
+import { People } from '../interfaces/people';
+import { PeopleService } from '../services/people.service';
 
 @Component({
-  selector: 'app-people-add',
+  selector: 'app-product-add',
   templateUrl: './people-add.component.html',
   styleUrls: ['./people-add.component.scss']
 })
@@ -16,6 +16,7 @@ export class PeopleAddComponent implements OnInit {
 	constructor(private peopleService: PeopleService, private location: Location) { }
 	
 	ngOnInit() {
+
 	}
 	
 	save(): void {

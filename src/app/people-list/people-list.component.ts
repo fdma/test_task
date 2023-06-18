@@ -1,28 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
-import { People } from '../people';
-import { PeopleService } from '../people.service';
+import { People } from '../interfaces/people';
+import { PeopleService } from '../services/people.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-people-list',
   templateUrl: './people-list.component.html',
   styleUrls: ['./people-list.component.scss']
 })
-export class PeopleListComponent implements OnInit {
-  peoples: People[] = [];
+export class PeopleListComponent {
+  readonly peoples$: Observable<People[]> = this.peopleService.getPeople();
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleService) { }
-
-  ngOnInit() {
-    this.getPeople();
-  }
-
-  getPeople(): void {
-    this.peopleService.getPeople().subscribe(peoples => this.peoples = peoples);
-  }
+  constructor(private peopleService: PeopleService) { }
 
   delete(people: People): void {
-		this.peopleService.deleteProduct(people).subscribe(success => {this.getPeople();});
+		this.peopleService.deletePeople(people).subscribe( );
 	}
 }

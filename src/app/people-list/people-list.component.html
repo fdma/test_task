@@ -1,9 +1,10 @@
-<h3>List of Products</h3>
+<h1>List of Persons</h1>
 <div>
 	<a routerLink="/people/add">
 		Add New People Information
 	</a>
 </div>
+<ng-container>
 <table>
   <tr>
     <th>ID</th>
@@ -14,7 +15,7 @@
 	<th>City</th>
 	<th>Actions</th>
   </tr>
-  <tr *ngFor="let people of peoples">
+  <tr *ngFor="let people of (peoples$ | async)">
 	<td>{{people.id}}</td>
     <td>{{people.firstname}}</td>
     <td>{{people.lastname}}</td>
@@ -23,8 +24,8 @@
 	<td>{{people.city}}</td>
 	<td>
 		<a routerLink="/people/{{people.id}}/detail">Detail</a>&nbsp;
-		<a routerLink="/people/{{people.id}}/update">Edit</a>&nbsp;
-		<button title="delete people" (click)="delete(people)">x</button>
+		<a [routerLink]="'/people/edit/'+people.id">Edit</a>&nbsp;
+		<button mat-raised-button title="delete people" (click)="delete(people)">x</button>
 	</td>
   </tr>
 </table>

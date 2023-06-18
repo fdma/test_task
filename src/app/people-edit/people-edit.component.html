@@ -1,1 +1,14 @@
-<p>people-edit works!</p>
+<form mat-form-field [formGroup]="formGroup" *ngIf="people$ | async as people;">
+  <h2>{{ people.firstname | uppercase }} Details</h2>
+  <div>
+    <p>
+      Firstname: <input formControlName="firstname" placeholder="Firstname" />
+    </p>
+
+    <p>Lastname: <input formControlName="lastname" placeholder="Lastname" /></p>
+
+    <p>Email: <input formControlName="email" placeholder="Email" /></p>
+  </div>
+  <button (click)="goBack()">Go Back</button>
+  <button [disabled]="formGroup.invalid" (click)="save()">Save</button>
+</form>

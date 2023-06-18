@@ -6,8 +6,15 @@ import { AppComponent } from './app.component';
 import { PeopleListComponent } from './people-list/people-list.component';
 import { PeopleAddComponent } from './people-add/people-add.component';
 import { PeopleEditComponent } from './people-edit/people-edit.component';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { LoginComponent } from './login/login.component';
+import {MatInputModule} from '@angular/material/input';
+import { AuthInterceptor } from './authconfig.interceptor';
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -15,14 +22,28 @@ import { HttpClientModule } from '@angular/common/http';
     PeopleListComponent,
     PeopleAddComponent,
     PeopleEditComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    NoopAnimationsModule,
+    MatTableModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule
+    
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

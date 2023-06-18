@@ -1,36 +1,38 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { People } from '../people';
-import { PeopleService } from '../people.service';
+import { People } from '../interfaces/people';
+import { PeopleService } from '../services/people.service';
+import { Observable, switchMap, tap } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-people-edit',
   templateUrl: './people-edit.component.html',
-  styleUrls: ['./people-edit.component.scss']
+  styleUrls: ['./people-edit.component.scss'],
 })
-export class PeopleEditComponent implements OnInit {
+export class PeopleEditComponent {
+	people$: Observable<People> = this.route.paramMap.pipe(
+		switchMap(params => this.peopleService.getPersonById(<string>params.get('id'))),
+		tap((p: People) => this.formGroup.patchValue(p))
+	)
 
-	@Input() people: People;
+	readonly formGroup = new FormGroup({
+		firstname: new FormControl('', [Validators.required, Validators.minLength(2)]),
+		lastname: new FormControl('', [Validators.required]),
+		email: new FormControl('', [Validators.required, Validators.email]),
+	})
 	
 	constructor(private route: ActivatedRoute, private peopleService: PeopleService, private location: Location) { }
 	
-	ngOnInit() {
-		this.getPeople();
-	}
-	
-	getPeople(): void {
-		const id = this.route.snapshot.paramMap.get('id');
-    // this.peopleService.getPeople(id).subscribe(people => this.people = people);
-	}
-	
+
 	save(): void {
-		this.peopleService.updatePeople(this.people).subscribe(success=> {this.goBack();});
+		const people = this.formGroup.value as People;
+		this.peopleService.updatePeople(people).subscribe(() => {this.goBack();});
 	}
 	
 	goBack(): void {
-		this.location.back();
+			this.location.back();
 	}
-
 }
