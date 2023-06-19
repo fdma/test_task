@@ -69,7 +69,8 @@
               "browserTarget": "test-task:build:production"
             },
             "development": {
-              "browserTarget": "test-task:build:development"
+              "browserTarget": "test-task:build:development",
+              "proxyConfig": "./proxy.config.json"
             }
           },
           "defaultConfiguration": "development"

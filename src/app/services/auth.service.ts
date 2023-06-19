@@ -12,20 +12,16 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  endpoint: string = '';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
+  endpoint: string = '/api';
   currentUser = {};
   constructor(private http: HttpClient, public router: Router) {}
   // Sign-in
   signIn(user: User) {
     return this.http
-      .post<any>(`${this.endpoint}/login?email=${user.email}&password=${user.password}`, user)
+      .post(`${this.endpoint}/login`, user)
       .subscribe((res: any) => {
         localStorage.setItem('access_token', res.token);
-        this.getUserProfile(res._id).subscribe((res) => {
-          this.currentUser = res;
-          this.router.navigate(['people/' + res.msg._id]);
-        });
       });
   }
   getToken() {
@@ -42,15 +38,15 @@ export class AuthService {
     }
   }
   // User profile
-  getUserProfile(id: any): Observable<any> {
-    let api = `${this.endpoint}/user-profile/${id}`;
-    return this.http.get(api, { headers: this.headers }).pipe(
-      map((res) => {
-        return res || {};
-      }),
-      catchError(this.handleError)
-    );
-  }
+  // getUserProfile(id: any): Observable<any> {
+  //   let api = `${this.endpoint}/user-profile/${id}`;
+  //   return this.http.get(api, { headers: this.headers }).pipe(
+  //     map((res) => {
+  //       return res || {};
+  //     }),
+  //     catchError(this.handleError)
+  //   );
+  // }
   // Error
   handleError(error: HttpErrorResponse) {
     let msg = '';

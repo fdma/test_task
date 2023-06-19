@@ -10,7 +10,7 @@ import { People } from '../interfaces/people';
 export class PeopleService {
   constructor(private http: HttpClient) {  }
 
-  private peopleUrl = '/people/';
+  private peopleUrl = 'api/people/';
 
   getPeople(): Observable<People[]> {
     return this.http.get<People[]>(this.peopleUrl);
